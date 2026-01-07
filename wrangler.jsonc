@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "worker-logs",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat_v2"],
+
+  // Observability for debugging
+  "observability": {
+    "enabled": true
+  },
+
+  // Durable Object bindings
+  "durable_objects": {
+    "bindings": [
+      { "name": "APP_LOGS_DO", "class_name": "AppLogsDO" }
+    ]
+  },
+
+  // DO migrations - use new_sqlite_classes for SQLite-backed DOs
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["AppLogsDO"] }
+  ]
+
+  // KV namespace will be added after creation with wrangler
+  // "kv_namespaces": [
+  //   { "binding": "LOGS_KV", "id": "<kv-id>" }
+  // ]
+}
