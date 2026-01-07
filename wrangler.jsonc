@@ -26,10 +26,10 @@
   // DO migrations - use new_sqlite_classes for SQLite-backed DOs
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["AppLogsDO"] }
-  ]
+  ],
 
-  // KV namespace - uncomment after creating with: npm run wrangler -- kv namespace create LOGS_KV
-  // "kv_namespaces": [
-  //   { "binding": "LOGS_KV", "id": "<kv-id>" }
-  // ]
+  // KV namespace for app registry and stats
+  "kv_namespaces": [
+    { "binding": "LOGS_KV", "id": "6255715dc02c4829b7d7c2986a3bf63a" }
+  ]
 }
