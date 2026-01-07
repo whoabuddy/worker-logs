@@ -6,6 +6,11 @@
   // nodejs_compat_v2 includes RPC support (requires compat date >= 2024-04-03)
   "compatibility_flags": ["nodejs_compat_v2"],
 
+  // Custom domain route
+  "routes": [
+    { "pattern": "logs.wbd.host", "custom_domain": true }
+  ],
+
   // Observability for debugging
   "observability": {
     "enabled": true
@@ -23,7 +28,7 @@
     { "tag": "v1", "new_sqlite_classes": ["AppLogsDO"] }
   ]
 
-  // KV namespace - uncomment after creating with: wrangler kv namespace create LOGS_KV
+  // KV namespace - uncomment after creating with: npm run wrangler -- kv namespace create LOGS_KV
   // "kv_namespaces": [
   //   { "binding": "LOGS_KV", "id": "<kv-id>" }
   // ]
