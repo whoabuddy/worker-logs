@@ -41,6 +41,15 @@ npm run wrangler -- kv namespace create LOGS_KV
 # Add the returned ID to wrangler.jsonc
 ```
 
+### 5. Set Admin API Key
+
+App registration requires an admin key. Set it as a secret:
+
+```bash
+npm run wrangler -- secret put ADMIN_API_KEY
+# Enter a secure random key (e.g., openssl rand -hex 24)
+```
+
 ## Usage
 
 ### REST API (External)
@@ -48,28 +57,38 @@ npm run wrangler -- kv namespace create LOGS_KV
 ```bash
 # Write logs
 curl -X POST https://worker-logs.<your-domain>.workers.dev/logs \
-  -H "X-API-Key: your-api-key" \
+  -H "X-App-ID: my-app" \
+  -H "X-Api-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{"level": "INFO", "message": "Hello from external"}'
 
 # Query logs
 curl "https://worker-logs.<your-domain>.workers.dev/logs?level=ERROR&limit=10" \
-  -H "X-API-Key: your-api-key"
+  -H "X-App-ID: my-app" \
+  -H "X-Api-Key: your-api-key"
 ```
 
 ### RPC Binding (Internal Workers)
 
 ```typescript
 // In your worker's wrangler.jsonc:
-// "services": [{ "binding": "LOGGER", "service": "worker-logs", "entrypoint": "LoggerService" }]
+// "services": [{ "binding": "LOGS", "service": "worker-logs", "entrypoint": "LogsRPC" }]
 
 // Usage:
-await env.LOGGER.log('my-app', 'INFO', 'User action', { userId: '123' })
+await env.LOGS.info('my-app', 'User action', { userId: '123' })
+```
+
+## Testing
+
+```bash
+npm test        # Run all tests
+npm run test:watch  # Watch mode
 ```
 
 ## Documentation
 
-See [docs/PLAN.md](docs/PLAN.md) for full implementation details.
+- [Integration Guide](docs/integration.md) - How to integrate worker-logs into your workers
+- [Implementation Plan](docs/PLAN.md) - Architecture and design details
 
 ## License
 

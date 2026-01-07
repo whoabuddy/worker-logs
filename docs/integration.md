@@ -166,16 +166,19 @@ export default {
 
 For workers on different accounts or external services, use the HTTP API with authentication.
 
-### 1. Register Your App
+### 1. Register Your App (Requires Admin Key)
 
 ```bash
 curl -X POST https://logs.wbd.host/apps \
   -H "Content-Type: application/json" \
+  -H "X-Admin-Key: your-admin-key" \
   -d '{"app_id": "my-external-app", "name": "My External App"}'
 
 # Response includes api_key - save this securely!
 # {"ok":true,"data":{"name":"My External App","api_key":"abc123...",...}}
 ```
+
+> **Note**: App registration requires the admin key. Contact the service administrator to register new apps.
 
 ### 2. Add Secrets to Your Worker
 
@@ -216,10 +219,10 @@ async function sendLog(env: Env, level: string, message: string, context?: objec
 |----------|--------|------|-------------|
 | `/logs` | POST | API Key | Write log(s) |
 | `/logs` | GET | API Key | Query logs |
-| `/apps` | POST | None | Register new app (returns API key) |
+| `/apps` | POST | Admin Key | Register new app (returns API key) |
 | `/apps` | GET | None | List app IDs |
 | `/apps/:id` | GET | None | Get app details (no API key shown) |
-| `/apps/:id` | DELETE | None | Delete app |
+| `/apps/:id` | DELETE | API Key | Delete app (owner only) |
 | `/stats/:id` | GET | None | Get daily stats |
 | `/health/:id` | GET | None | Get health checks |
 
